@@ -11,12 +11,12 @@ def GenLogo(request):
 	if serializer.is_valid():
 		if Logo.objects.filter(desc=serializer.validated_data['desc']):
 			return Response('Exist')
-		serializer.save()
+		#serializer.save()
 		businessDescription =serializer.data["desc"]
 		name = serializer.data["name"]
 		keywords = serializer.data["desc"]
 		color = serializer.data["color"] 
-		number = int(serializer.data["number"])
+		number = int(request.data["number"]) if int(request.data["number"])<=25 else 25
 		q="businessDescription="+urllib.parse.quote_plus(businessDescription)+"&FilterByTags=&Colors="+urllib.parse.quote_plus(color)+"&text="+urllib.parse.quote_plus(name)+"&searchText="+urllib.parse.quote_plus(keywords.replace(' ',','))+"&customPrompt=&isFromAILogoGenerator=true"
 		url=baseurl+q
 		response = requests.get(url)
