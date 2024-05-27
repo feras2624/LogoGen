@@ -9,12 +9,14 @@ baseurl='https://www.design.com/api/logo/more/1?'
 def GenLogo(request):
 	serializer = LogoSerializer(data=request.data)
 	if serializer.is_valid():
+		if Logo.objects.filter(desc=serializer.validated_data['desc']):
+			return Response('Exist')
 		serializer.save()
-		businessDescription =request.data["desc"]
-		name = request.data["name"]
-		keywords = request.data["desc"]
-		color = request.data["color"] 
-		number = int(request.data["number"])
+		businessDescription =serializer.data["desc"]
+		name = serializer.data["name"]
+		keywords = serializer.data["desc"]
+		color = serializer.data["color"] 
+		number = int(serializer.data["number"])
 		q="businessDescription="+urllib.parse.quote_plus(businessDescription)+"&FilterByTags=&Colors="+urllib.parse.quote_plus(color)+"&text="+urllib.parse.quote_plus(name)+"&searchText="+urllib.parse.quote_plus(keywords.replace(' ',','))+"&customPrompt=&isFromAILogoGenerator=true"
 		url=baseurl+q
 		response = requests.get(url)
