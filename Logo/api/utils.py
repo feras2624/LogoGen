@@ -15,7 +15,7 @@ MAX=5
 
 def savefile(data):
 	nd=data[1:].replace('\'','')
-	tmp=os.path.join(os.getcwd(),'LogoGen','tmp')
+	tmp=os.path.join(settings.BASE_DIR,'LogoGen','tmp')
 	random.seed(datetime.now().timestamp())
 	ran=str(random.randint(1, 1000))
 	n=os.path.join(tmp, ran + '.png')
