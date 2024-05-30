@@ -22,7 +22,7 @@ APPS_DIR = BASE_DIR / "logo"
 
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -87,6 +87,8 @@ WSGI_APPLICATION = 'Logo.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"]["ENGINE"]= 'django.db.backends.postgresql'
+DATABASES["default"]["NAME"]='logo'
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation

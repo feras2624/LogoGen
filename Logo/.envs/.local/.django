@@ -2,4 +2,4 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
-DATABASE_URL=
+DATABASE_URL= postgres://TucToUdUKIXiKjRDvqyVIcZkRksCTEEr:twCV5wi2EU36IzZM4ciHYefWLK9wk9wpMXF4VWxRI87TUsSrzOrcIyfupA3ihrrn@postgres:5432/logo
