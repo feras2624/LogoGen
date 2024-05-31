@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from LogoGen.models import Logo
 from .serializers import LogoSerializer
 from . import utils
-
+from googletrans import Translator
 
 
 
@@ -11,9 +11,12 @@ from . import utils
 def GenLogo(request):
 	serializer = LogoSerializer(data=request.data)
 	if serializer.is_valid():
-		if Logo.objects.filter(desc=serializer.validated_data['desc']):
-			return Response(utils.exist(serializer))
-		utils.savetodb(serializer)
-		return Response(utils.exist(serializer))
+		trans=Translator()
+		trans.raise_Exception = True
+		translated = trans.translate(serializer.data["desc"],dest='en').text
+		if Logo.objects.filter(desc=translated):
+			return Response(utils.exist(serializer,translated))
+		utils.savetodb(serializer,translated)
+		return Response(utils.exist(serializer,translated))
 
 	return Response("Unvalid Data")
