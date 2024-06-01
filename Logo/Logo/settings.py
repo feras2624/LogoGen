@@ -22,7 +22,7 @@ APPS_DIR = BASE_DIR / "logo"
 
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_crontab',
     'LogoGen',
 ]
 
@@ -109,9 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CRONJOBS = [
-('*/30 * * * *', 'Logo.cron.removetmp','>> /tmp/cron.log 2>&1')
-]
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

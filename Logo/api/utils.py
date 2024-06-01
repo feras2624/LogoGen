@@ -15,16 +15,7 @@ baseurl='https://www.design.com/api/logo/more/1?'
 MAX=10
 Colors=['grayscale','blue','purple','pink','red','orange','yellow','green']
 
-def savefile(data):
-	nd=data[1:].replace('\'','')
-	tmp=os.path.join(settings.BASE_DIR,'LogoGen','tmp')
-	random.seed(datetime.now().timestamp())
-	ran=str(random.randint(1, 1000))
-	n=os.path.join(tmp, ran + '.png')
-	with open(n,'wb') as f:
-		#print(nd)
-		f.write(base64.b64decode(nd))
-	return HOST+os.path.join(settings.MEDIA_URL,'tmp', ran + '.png')
+
 
 
 def savetodb(serializer,translated):
@@ -44,7 +35,10 @@ def savetodb(serializer,translated):
 		for r in res:
 			d=requests.get(r)
 			if d.status_code == 200:
-				obj = Logo.objects.create(name=serializer.data["name"],desc=translated,color=c,img=base64.b64encode(d.content))
+				data = str(base64.b64encode(d.content))
+				nd = data[1:].replace('\'','')
+				print('\n',nd,'\n')
+				obj = Logo.objects.create(name=serializer.data["name"],desc=translated,color=c,img=nd)
 				obj.save()
 
 
@@ -54,8 +48,8 @@ def exist(serializer,translated):
 
 			values = Logo.objects.filter(desc__contains=translated,color=serializer.validated_data['color']).values('img')
 			lis=[]
-			for i in range(MAX-1):
+			for v in values:
 				#random.seed(datetime.now().timestamp())
-				lis.append(savefile(values[i]['img']))
+				lis.append(v['img'])
 				#print(values[i]['desc'])
 			return lis
